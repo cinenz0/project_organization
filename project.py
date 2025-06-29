@@ -42,7 +42,9 @@ def prompt_for_path(default_path):
 
     user_path = input('Path to orginize (blank to use default): ')
     if user_path == '':
-        return Path(default_path)
+        user_path = default_path
+        return user_path
+        
     elif not Path(user_path).exists():
         raise FileNotFoundError
 

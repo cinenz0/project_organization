@@ -15,7 +15,7 @@ data_dict = [
 
     {
         'Folder':'Word',
-        'Suffixes':['.docx','.doc'],
+        'Suffixes':['.docx','.doc','txt'],
     },
 
     {
@@ -31,5 +31,9 @@ data_dict = [
     {
         'Folder':'Audio',
         'Suffixes':['.mp3','.wav'],
+    },
+    {
+        'Folder':'Zipped',
+        'Suffixes':['.rar', '.zip'],
     }
 ]
