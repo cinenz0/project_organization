@@ -1,13 +1,10 @@
 import sys
-import re
 import argparse
 from pathlib import Path
-from data_dict import data_dict
+
 
 
 CONFIG_FILE = 'path.txt'
-
-
 
 
 def parse_args():
@@ -21,10 +18,8 @@ def parse_args():
             f.write(args.path)    
         print(f'The default path to organize has been changed to: {args.path}')       
         return Path(args.path)
-
     elif args.path:
         return Path(args.path)
-    
     stored_path = get_default_path()
     if stored_path:
         print(f'Using default path:{stored_path}')
@@ -34,16 +29,19 @@ def parse_args():
 def prompt_for_path(default_path):
     user_path = input('Path to orginize (blank to use default): ')
     if user_path == '':
-        user_path = default_path
-        return user_path
+        return default_path
     elif not Path(user_path).exists():
         raise FileNotFoundError
 
     while True:
         defaulting = input('Would you like to meke this your default path? ').lower()
         if defaulting in ['y','yes']:
+            with open(CONFIG_FILE) as file:
+                first_line = file.readline()
+                second_line = file.readline()
+                first_line = user_path
             with open (CONFIG_FILE, 'w') as new_file:
-                 new_file.write(user_path)
+                 new_file.write(first_line + '\n'+ second_line)
             break
         elif defaulting in ['n','no']:
             break
@@ -51,4 +49,26 @@ def prompt_for_path(default_path):
             print('Invalid answer, [Y]es or [N]o, please')
             continue
     
+    return Path(user_path)
+
+def prompt_for_dst_path(default_dst_path):
+    user_path = input('Destination path (blank to use default): ')
+    if user_path == '':
+        return default_dst_path
+    elif not Path(user_path).exists():
+        raise FileNotFoundError
+
+    while True:
+        defaulting = input('Would you like to meke this your default destination path? ').lower()
+        if defaulting in ['y','yes']:
+            with open(CONFIG_FILE) as file:
+                first_line = file.readline()
+            with open (CONFIG_FILE, 'w') as new_file:
+                 new_file.write(first_line + '\n'+ user_path)
+            break
+        elif defaulting in ['n','no']:
+            break
+        else:
+            print('Invalid answer, [Y]es or [N]o, please')
+            continue
     return Path(user_path)

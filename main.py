@@ -1,35 +1,23 @@
-
-'''    
-Asks the user for the directory to be organized
-    If given a -d or --defaut flag, saves the path in a separate file 
-        If user doesnt provide any directory does it on desktop by defaut or on the defaut directory previously set✅
-
-Scans the directory  for files ending in a pattern like .pdf or .docx or .csv based on a dictornary which associetes 
-file types and file extenssions ✅
-    If there isn't a folder called "Documents" or smthing like that the program creates one and inside this folder it creates a new folder for
-    each of the file types found on the chosen directory ✅
-'''
-
 import sys
-import re
-import argparse
 from pathlib import Path
 from data_dict import data_dict
 from organize_by_suffix import organize_by_sufix
-from paths import get_default_path, parse_args, prompt_for_path
+from paths import parse_args, prompt_for_path, prompt_for_dst_path
+from default_paths import get_default_path,get_default_path_dst
 from scan_files import scan_files
 
 
 
 def main():
     try:
-        default = get_default_path()
+        default, dst = get_default_path(), get_default_path_dst()
         if len(sys.argv)> 1:
             directory = parse_args()
         else:
-            directory = prompt_for_path(default)
+            directory, dst_directory  = prompt_for_path(default), prompt_for_dst_path(dst)
+        #print(f'default {default}, dst {dst}, directory {directory}, dst_directory {dst_directory}')
         list_of_files = scan_files(directory)
-        organize_by_sufix(list_of_files, directory)
+        organize_by_sufix(list_of_files,original_directory = directory, dst_directory = dst_directory)
     except FileNotFoundError:
         sys.exit('Invalid file path')
        
