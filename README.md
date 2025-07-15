@@ -1,5 +1,5 @@
   # Python File Organizer
-#### Video Demo:  <https://youtu.be/HjTISdCiJ1Y>
+
 
 ### Features
 

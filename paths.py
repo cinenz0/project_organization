@@ -1,74 +1,80 @@
-import sys
+
 import argparse
+import json
 from pathlib import Path
+from default_paths import paths
 
+source, destination = paths()
 
+CONFIG_FILE = 'config.json'
+SRC_KEY = "source path"
+DST_KEY = "destination path"
 
-CONFIG_FILE = 'path.txt'
+def prompt(default, key):
+    result = prompting(key, default)
+    return (Path(result))
 
+def prompting(key,default):
+    user_path = input(f'{key} path (blank to use default): ')
+    if user_path == '':
+        return default
+    elif not Path(user_path).exists():
+        raise FileNotFoundError
+    
+    while True:
+        defaulting = input('Would you like to meke this your default path? ').lower()
+        if defaulting in ['y','yes']:
+            save_path(key,user_path)
+            break
+        elif defaulting in ['n','no']:
+            break
+        else:
+            print('Invalid answer, [Y]es or [N]o, please')
+            continue
+        
+    return user_path
+
+def save_path(key, value):
+    with open(CONFIG_FILE) as f:
+        data = json.load(f)
+        data[key] = value
+    with open (CONFIG_FILE, 'w') as file:
+        json.dump(data, file, indent = 4)
+            
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-sd', '--set-default', action='store_true', help='Sets the chosen path to be the default path of file sorting')
-    parser.add_argument('path', nargs = '?', help = 'Type the path to the directory you want to organize' )
+    parser.add_argument('-s', '--source', help='The source directory to organize')
+    parser.add_argument('-d', '--destination', help='The destination directory')
     args = parser.parse_args()
+    source_path = None
+    destination_path = None
 
-    if args.set_default and args.path:
-        with open(CONFIG_FILE, 'w') as f:
-            f.write(args.path)    
-        print(f'The default path to organize has been changed to: {args.path}')       
-        return Path(args.path)
-    elif args.path:
-        return Path(args.path)
-    stored_path = get_default_path()
-    if stored_path:
-        print(f'Using default path:{stored_path}')
-        return Path(stored_path)
-
-
-def prompt_for_path(default_path):
-    user_path = input('Path to orginize (blank to use default): ')
-    if user_path == '':
-        return default_path
-    elif not Path(user_path).exists():
-        raise FileNotFoundError
-
-    while True:
-        defaulting = input('Would you like to meke this your default path? ').lower()
-        if defaulting in ['y','yes']:
-            with open(CONFIG_FILE) as file:
-                first_line = file.readline()
-                second_line = file.readline()
-                first_line = user_path
-            with open (CONFIG_FILE, 'w') as new_file:
-                 new_file.write(first_line + '\n'+ second_line)
-            break
-        elif defaulting in ['n','no']:
-            break
+    # Check for source path independently
+    if args.source:
+        path = Path(args.source)
+        if path.exists():
+            source_path = path
         else:
-            print('Invalid answer, [Y]es or [N]o, please')
-            continue
+            print(f"Error: Provided source path does not exist: {path}")
+
+    # Check for destination path independently
+    if args.destination:
+        path = Path(args.destination)
+        if path.exists():
+            destination_path = path
+        else:
+            print(f"Error: Provided destination path does not exist: {path}")
+
+    # Handle the -sd flag
+    if args.set_default:
+        # You could add logic here to only save paths that were successfully found
+        print("Saving new default paths...")
+        if source_path:
+            save_path(SRC_KEY, args.source)
+        if destination_path:
+            save_path(DST_KEY, args.destination)
     
-    return Path(user_path)
-
-def prompt_for_dst_path(default_dst_path):
-    user_path = input('Destination path (blank to use default): ')
-    if user_path == '':
-        return default_dst_path
-    elif not Path(user_path).exists():
-        raise FileNotFoundError
-
-    while True:
-        defaulting = input('Would you like to meke this your default destination path? ').lower()
-        if defaulting in ['y','yes']:
-            with open(CONFIG_FILE) as file:
-                first_line = file.readline()
-            with open (CONFIG_FILE, 'w') as new_file:
-                 new_file.write(first_line + '\n'+ user_path)
-            break
-        elif defaulting in ['n','no']:
-            break
-        else:
-            print('Invalid answer, [Y]es or [N]o, please')
-            continue
-    return Path(user_path)
+    # Return what was found, which might be one, both, or neither.
+    return source_path, destination_path
