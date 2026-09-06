@@ -5,7 +5,7 @@ data_dict = [
     },
     {
         'Folder':'Excel',
-        'Suffixes':['.csv','.xlsx', 'xls'],
+        'Suffixes':['.csv','.xlsx', '.xls'],
     },
 
     {
@@ -15,7 +15,7 @@ data_dict = [
 
     {
         'Folder':'Word',
-        'Suffixes':['.docx','.doc','txt'],
+        'Suffixes':['.docx','.doc','.txt'],
     },
 
     {
@@ -25,7 +25,7 @@ data_dict = [
 
     {
         'Folder':'Video',
-        'Suffixes':['.mp4','.mov', 'wmv'],
+        'Suffixes':['.mp4','.mov', '.wmv'],
     },
 
     {
@@ -35,5 +35,10 @@ data_dict = [
     {
         'Folder':'Zipped',
         'Suffixes':['.rar', '.zip'],
-    }
+    },
+    {
+        'Folder':'Calendar',
+        'Suffixes':['.ics'],
+    },
+
 ]

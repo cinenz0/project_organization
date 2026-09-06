@@ -2,3 +2,8 @@ __pycache__/
 *.txt
 .pytest_cache
 *.json
+.venv/
+build/
+dist/
+!requirements-desktop.txt
+!requirements-build.txt

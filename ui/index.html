@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="central-token" content="__CENTRAL_TOKEN__">
+  <title>Central</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="topbar"><strong>Central</strong><button id="shutdown" class="quiet" type="button" disabled>Encerrar</button></header>
+  <main>
+    <div class="heading"><h1>Organizar arquivos</h1><p id="stage">Pastas <span>›</span> <strong id="stage-review">Revisão</strong> <span>›</span> <strong id="stage-result">Resultado</strong></p></div>
+    <p id="notice" class="notice" hidden></p>
+    <section class="folders" aria-label="Pastas selecionadas">
+      <div class="folder"><span>Origem</span><strong id="source-name">Nenhuma pasta selecionada</strong><output id="source-path">Escolha a pasta que contém os arquivos.</output><button id="choose-source" type="button" disabled>Escolher pasta</button></div>
+      <div class="folder"><span>Pasta central</span><strong id="central-name">Nenhuma pasta selecionada</strong><output id="central-path">Escolha onde os arquivos serão organizados.</output><button id="choose-central" type="button" disabled>Escolher pasta</button></div>
+    </section>
+    <section id="review" aria-labelledby="review-title" hidden>
+      <div class="section-head"><div><h2 id="review-title">Prévia</h2><p id="summary"></p></div><button id="refresh" class="quiet" type="button" disabled>Atualizar prévia</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Arquivo</th><th>Pasta na central</th><th>Nome na central</th></tr></thead><tbody id="planned-rows"></tbody></table></div>
+      <button id="more" class="quiet" type="button" hidden></button>
+      <p id="rename-note" class="note" hidden></p>
+      <details id="retained" hidden><summary id="retained-summary"></summary><ul id="retained-list"></ul><button id="retained-more" class="quiet" type="button" hidden></button></details>
+      <div class="actions"><p id="move-help">Revise os destinos antes de mover os arquivos.</p><button id="move" class="primary" type="button" disabled>Mover arquivos</button></div>
+    </section>
+    <section id="empty" hidden><h2 id="empty-title">Escolha as pastas para começar</h2><p id="empty-text">A prévia será criada automaticamente após a escolha.</p><button id="empty-source" class="primary" type="button" disabled>Escolher pasta de origem</button><button id="empty-refresh" class="quiet" type="button" disabled hidden>Atualizar prévia</button></section>
+    <section id="result" hidden aria-live="polite"><h2 id="result-title"></h2><p id="result-summary"></p><div id="result-list" class="result-list"></div><button id="result-more" class="quiet" type="button" hidden></button><p id="result-note" class="note" hidden></p><div class="actions"><p id="result-help"></p><div><button id="back-review" class="quiet" type="button" disabled>Voltar à revisão</button><button id="retry" type="button" hidden disabled></button><button id="another" class="primary" type="button" disabled>Organizar outra pasta</button></div></div></section>
+    <section id="loading"><h2 id="loading-title">Carregando…</h2><p id="loading-text">Lendo a configuração e preparando a prévia.</p></section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
